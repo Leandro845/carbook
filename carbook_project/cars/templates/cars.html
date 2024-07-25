@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page %}
+Choose Your Car
+{% endblock %}
+
+{% block title_page %}
+Cars
+{% endblock %}
+
+{% block content %}
+
+<section class="ftco-section bg-light">
+	<div class="container">
+		<div class="row">
+			{% for car in obj_list %}
+			<div class="col-md-4">
+				<div class="car-wrap rounded ftco-animate">
+					{% if car.image %}
+					<div class="img rounded d-flex align-items-end" style="background-image: url({{ car.image.url }});">
+					</div>
+					{% else %}
+					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/no-photo.jpg' %});">
+					</div>
+					{% endif %}
+					<div class="text">
+						<h2 class="mb-0"><a href="car-single.html">{{ car.car_name }}</a></h2>
+						<div class="d-flex mb-3">
+							<span class="cat">{{ car.category }}</span>
+							<p class="price ml-auto">${{ car.pricing_per_day }} <span>/day</span></p>
+						</div>
+						<p class="d-flex mb-0 d-block"><a href="{% url 'book_car' car.id %}" class="btn btn-primary py-2 mr-1">Book now</a> <a href="{% url 'car_detail' car.id %}" class="btn btn-secondary py-2 ml-1">Details</a></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		
+		{% include 'parciais/_paginator.html' %}
+
+	</div>
+</section>
+
+{% endblock %}

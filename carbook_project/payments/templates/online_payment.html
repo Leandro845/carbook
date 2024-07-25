@@ -1,0 +1,101 @@
+{% extends 'base_payment.html' %}
+{% load static %}
+
+{% block car_image %}
+    {% if car.image %}
+        <img src="{{ car.image.url }}" alt="{{ car.car_name }}" class="img-fluid">
+    {% else %}
+        <img src="{% static 'images/no-photo.jpg' %}" alt="No Image" class="img-fluid">
+    {% endif %}
+{% endblock %}
+
+{% block title_page %}
+Payment
+{% endblock %}
+
+{% block page %}
+    {{ car.car_name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-center">Online Payment</h1>
+
+    <form action="{% url 'payment' car.id %}" method="post" class="mt-4">
+        {% csrf_token %}
+
+        <h2>Reservation Details</h2>
+        <div class="form-group">
+            <label for="carName">Car:</label>
+            <input type="text" class="form-control" id="carName" value="{{ car.car_name }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="pickupDate">Pickup:</label>
+            <input type="datetime-local" class="form-control" id="pickupDate" required>
+        </div>
+        <div class="form-group">
+            <label for="returnDate">Return:</label>
+            <input type="datetime-local" class="form-control" id="returnDate" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount to be paid:</label>
+            <input type="text" class="form-control" id="amount" value="${{ price }}" readonly>
+        </div>
+
+        <h2>Pickup Location</h2>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" class="form-control" id="address" placeholder="Full Address" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Number:</label>
+            <input type="number" class="form-control" id="house-number" placeholder="Number" required>
+        </div>
+
+        <h2>Personal Information</h2>
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required>
+        </div>
+        <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+        </div>
+
+        <h2>Card Information</h2>
+        <div class="form-group">
+            <label for="card_number">Card Number</label>
+            <input type="text" class="form-control" id="card_number" name="card_number" placeholder="0000 0000 0000 0000" required pattern="\d{4} \d{4} \d{4} \d{4}" title="Enter a valid card number in the format: 1234 5678 9012 3456">
+        </div>
+        <div class="form-group">
+            <label for="expiry_date">Expiry Date (MM/YY)</label>
+            <input type="text" class="form-control" id="expiry_date" name="expiry_date" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/?([0-9]{2})" title="Enter a valid expiry date in the format: MM/YY">
+        </div>
+        <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required pattern="\d{3}" title="Enter a 3-digit CVV">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary btn-block">Complete Payment</button>
+    </form>
+</div><br><br><br>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7-beta.19/inputmask.min.js"></script>
+<script src="{% static 'js/payments.js' %}"></script>
+{% endblock %}
